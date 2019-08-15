@@ -1,0 +1,35 @@
+{
+  "name": "minipsp",
+  "version": "1.0.0",
+  "description": "A simple mini Payment Service Provider (PSP) to process cash-in / cash-out process",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --inspect=0.0.0.0:7000 --recursive test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhogoforbroke/minipsp.git"
+  },
+  "keywords": [
+    "psp",
+    "payment",
+    "cash-in",
+    "cash-out",
+    "payables"
+  ],
+  "author": "Jonatas Marinho <jmarinho.dev@gmail.com> (https://github.com/jhogoforbroke)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhogoforbroke/minipsp/issues"
+  },
+  "homepage": "https://github.com/jhogoforbroke/minipsp#readme",
+  "dependencies": {
+    "sequelize": "^5.9.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "proxyquire": "^2.1.0",
+    "sinon": "^6.3.5"
+  }
+}
