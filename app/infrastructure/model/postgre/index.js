@@ -11,9 +11,9 @@ Sequelize = require('sequelize');
 
 const { Op } = Sequelize;
 
-module.exports = (config, Sequelize = Sequelize) => {
+module.exports = (config, Sequelize = require('sequelize')) => {
 
-  let sequelize = new Sequelize(config.db.postgree, {
+  let sequelize = new Sequelize(config.db.postgre, {
     logging: false,
     pool: {
       max: 5,

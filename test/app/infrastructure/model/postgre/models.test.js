@@ -1,23 +1,22 @@
 'use strict';
 
+const { config, contantes } = require('../../../../../config/util');
+
 const path = require('path');
 
 const sinon  = require('sinon');
 const { expect } = require('chai');
 
-const basePath = path.normalize('../../../../app');
-const config = { db: { postgree:'MOCKCONNECTIONSTRING' } };
-
-const Sequelize = require('../../../mocks/Sequelize');
+const Sequelize = require(`${contantes.PATH.TEST}/mocks/Sequelize`);
 let importStub = sinon.stub(Sequelize.prototype, 'import').callsFake((file) => path.parse(file));
 let syncStub = sinon.stub(Sequelize.prototype, 'sync').callsFake(() => {});
 
 let models;
 
-describe('models', () => {
+describe('postgre models', () => {
 
   beforeEach(() => {
-    models = require(`${basePath}/infrastructure/model`)(config, Sequelize);
+    models = require(`${contantes.PATH.INFRASTRUCTURE}/model/postgre`)(config, Sequelize);
   });
 
   it('should import models', () => {
