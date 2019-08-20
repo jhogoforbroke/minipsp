@@ -14,7 +14,15 @@ class NoCoreError extends Error {
   }
 };
 
+class UpdateWithoutWhereError extends Error {
+  constructor(){
+    super('Update needs where!');
+    this.name = 'UpdateWithoutWhereError'
+  }
+};
+
 module.exports = {
   NoConfigError,
-  NoCoreError
+  NoCoreError,
+  UpdateWithoutWhereError
 };

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const { config, contantes, exceptions } = require('../../../config/util');
 
@@ -31,7 +31,7 @@ describe('unitOfWork', () => {
 
     it('without core should throw a error message', () => {
       try {
-        require(`${contantes.PATH.INFRASTRUCTURE}/unitOfWork`)(core, undefined, postgreModel)
+        require(`${contantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, undefined, postgreModel)
       } catch (e) {
         expect(e).to.be.an.instanceof(exceptions.NoCoreError);
       }
