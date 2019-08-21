@@ -5,6 +5,7 @@ const { contantes } = require('../../../config/util');
 const chalk    = require('chalk');
 const inquirer = require('inquirer');
 
+
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 
 const confirmTransaction = () => {
@@ -23,22 +24,22 @@ const confirmTransaction = () => {
   });
 };
 
-const getAmount = () => {
+const getValue = () => {
 
   return new Promise((resolve, reject) => {
 
     inquirer.prompt([
       {
-        type: 'number',
+        type: 'string',
         name: 'amount',
-        message: 'Qual valor da transação?'
+        message: 'Qual valor da transação? (ex: 1,99)'
       }
     ])
     .then((answer) => {
 
-      if (!answer.amount) {
+      if (!answer.amount && /^[0-9]{1,3}((\.[0-9]{3})+)?\,[0-9]{2}$/.test(answer.amount)) {
         console.log(chalk.yellow('Valor inválido, digite o valor novamente!'));
-        return getAmount();
+        return getValue();
       }
 
       resolve(answer.amount);
@@ -97,7 +98,7 @@ const getTransaction = () => {
     getTransactionType()
     .then((type) => {
       transaction.type = type;
-      return getAmount();
+      return getValue();
     })
     .then((amount) => {
       transaction.amount = amount;
@@ -110,4 +111,4 @@ const getTransaction = () => {
   });
 };
 
-module.exports = { getTransaction, getDescription, getAmount, getTransactionType, confirmTransaction };
+module.exports = { getTransaction, getDescription, getValue, getTransactionType, confirmTransaction };

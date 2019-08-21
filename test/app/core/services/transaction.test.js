@@ -1,16 +1,19 @@
 "use strict";
 
-const { config, contantes, exceptions } = require('../../../config/util');
+const { config, contantes, exceptions } = require('../../../../config/util');
 
 const sinon  = require('sinon');
 const { expect } = require('chai');
 
 let transactionRepository,
-    payable,
-    card,
+    payableRepository,
+    payableService,
+    cardService = { isValid: () => {} },
     unitOfWork;
 
 unitOfWork = require(`${contantes.PATH.TEST}/mocks/unitOfWork`);
+
+let cardIsValidSpy = sinon.spy(cardService, 'isValid');
 
 sinon.stub(unitOfWork, 'getRepository').callsFake((modelName) => {
 
@@ -24,23 +27,76 @@ sinon.stub(unitOfWork, 'getRepository').callsFake((modelName) => {
 sinon.stub(unitOfWork, 'getService').callsFake((serviceName) => {
 
   if(serviceName === 'payable')
-    return payable;
+    return payableService;
 
   if(serviceName === 'card')
-    return card;
+    return cardService;
 });
 
-let transaction;
+let transactionService;
 
-describe('transaction', () => {
+describe('transactionService', () => {
 
   beforeEach(() => {
-    transaction = require(`${contantes.PATH.CORE}/services/transaction`)(unitOfWork);
+    transactionService = require(`${contantes.PATH.CORE}/services/transaction`)(unitOfWork);
   });
 
-  it('should process validate transaction data', () => {
-    transaction.validate(card, transaction)
-    expect(connectStub.called).to.be.true;
+  describe('When process validate transaction data', () => {
+
+    let card = {},
+        transaction = {
+          type: contantes.CREDIT_CARD,
+          amount: '9.999.999,99',
+          description: 'some valid description',
+        };
+
+    it('should validate card data', () => {
+      transactionService.validate(card, transaction)
+      expect(cardIsValidSpy.called).to.be.true;
+    });
+
+    describe('And transaction type is undefined', () => {
+      it('should invalidate transaction', () => {
+        transaction.type = '';
+        expect(transactionService.validate(card, transaction)).to.not.be.true;
+      });
+    });
+
+    describe('And transaction type is unknown', () => {
+      it('should invalidate transaction', () => {
+        transaction.type = 'ANOTHERTYPETHATNOTISCREDITORDEBIT';
+        expect(transactionService.validate(card, transaction)).to.not.be.true;
+      });
+    });
+
+    describe('And amount is undefined', () => {
+      it('should invalidate transaction', () => {
+        transaction.amount = '';
+        expect(transactionService.validate(card, transaction)).to.not.be.true;
+      });
+    });
+
+    describe('And amount is undefined', () => {
+      it('should invalidate transaction', () => {
+        transaction.amount = '00,00';
+        expect(transactionService.validate(card, transaction)).to.not.be.true;
+      });
+    });
+
+    describe('And description is undefined', () => {
+      it('should invalidate transaction', () => {
+        transaction.description = '';
+        expect(transactionService.validate(card, transaction)).to.not.be.true;
+      });
+    });
+
+    describe('And description is empty', () => {
+      it('should invalidate transaction', () => {
+        transaction.description = '                               ';
+        expect(transactionService.validate(card, transaction)).to.not.be.true;
+      });
+    });
+
   });
 
 });

@@ -21,6 +21,13 @@ class UpdateWithoutWhereError extends Error {
   }
 };
 
+class InvalidTransactionData extends Error {
+  constructor(){
+    super('Invalid transaction data!');
+    this.name = 'InvalidTransactionData'
+  }
+};
+
 module.exports = {
   NoConfigError,
   NoCoreError,

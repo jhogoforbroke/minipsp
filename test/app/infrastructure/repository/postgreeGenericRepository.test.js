@@ -17,7 +17,7 @@ describe('postgreeGenericRepository', () => {
     postgreeGenericRepository = require(`${contantes.PATH.INFRASTRUCTURE}/repository/postgreeGenericRepository`)(ENTITYNAME, postgreModel);
   });
 
-  it('description', () => {
+  it('SHOULD IMPLEMENT', () => {
     throw new Error('SHOULD IMPLEMENT');
   });
 

@@ -27,6 +27,7 @@
     "chalk": "^2.4.2",
     "clear": "^0.1.0",
     "clui": "^0.3.6",
+    "dinero.js": "^1.6.0",
     "figlet": "^1.2.3",
     "inquirer": "^6.4.1",
     "inquirer-datepicker-prompt": "^0.4.2",
