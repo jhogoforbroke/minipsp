@@ -1,6 +1,6 @@
 'use strict';
 
-const { config, contantes } = require('../../../../config/util');
+const { config, constantes } = require('../../../../config/util');
 
 const sinon  = require('sinon');
 const { expect } = require('chai');
@@ -14,7 +14,7 @@ let postgreeGenericRepository;
 describe('postgreeGenericRepository', () => {
 
   beforeEach(() => {
-    postgreeGenericRepository = require(`${contantes.PATH.INFRASTRUCTURE}/repository/postgreeGenericRepository`)(ENTITYNAME, postgreModel);
+    postgreeGenericRepository = require(`${constantes.PATH.INFRASTRUCTURE}/repository/postgreeGenericRepository`)(ENTITYNAME, postgreModel);
   });
 
   it('SHOULD IMPLEMENT', () => {

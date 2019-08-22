@@ -1,6 +1,6 @@
 "use strict";
 
-const { config, contantes, exceptions } = require('../../../config/util');
+const { config, constantes, exceptions } = require('../../../config/util');
 
 const sinon  = require('sinon');
 const { expect } = require('chai');
@@ -23,7 +23,7 @@ describe('unitOfWork', () => {
 
     it('without config should throw a error message', () => {
       try {
-        require(`${contantes.PATH.INFRASTRUCTURE}/unitOfWork`)(undefined, core, postgreModel)
+        require(`${constantes.PATH.INFRASTRUCTURE}/unitOfWork`)(undefined, core, postgreModel)
       } catch (e) {
         expect(e).to.be.an.instanceof(exceptions.NoConfigError);
       }
@@ -31,7 +31,7 @@ describe('unitOfWork', () => {
 
     it('without core should throw a error message', () => {
       try {
-        require(`${contantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, undefined, postgreModel)
+        require(`${constantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, undefined, postgreModel)
       } catch (e) {
         expect(e).to.be.an.instanceof(exceptions.NoCoreError);
       }
@@ -39,7 +39,7 @@ describe('unitOfWork', () => {
   });
 
   beforeEach(() => {
-    unitOfWork = require(`${contantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, core, postgreModel, postgreGenericRepositoryFake);
+    unitOfWork = require(`${constantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, core, postgreModel, postgreGenericRepositoryFake);
   });
 
   it('should connect to prostgree models', () => {

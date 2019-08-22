@@ -1,6 +1,6 @@
 "use strict";
 
-const { contantes } = require('../../../config/util');
+const { constantes } = require('../../../config/util');
 
 const chalk    = require('chalk');
 const inquirer = require('inquirer');
@@ -14,7 +14,7 @@ const init = () => {
         type: 'list',
         name: 'serviceType',
         message: 'O que gostaria de fazer?',
-        choices: contantes.SERVICE_TYPES_OPTIONS
+        choices: constantes.SERVICE_TYPES_OPTIONS
       }
     ])
     .then((answer) => {

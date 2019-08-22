@@ -1,13 +1,13 @@
 'use strict';
 
-const { config, contantes } = require('../../../../../config/util');
+const { config, constantes } = require('../../../../../config/util');
 
 const path = require('path');
 
 const sinon  = require('sinon');
 const { expect } = require('chai');
 
-const Sequelize = require(`${contantes.PATH.TEST}/mocks/Sequelize`);
+const Sequelize = require(`${constantes.PATH.TEST}/mocks/Sequelize`);
 let importStub = sinon.stub(Sequelize.prototype, 'import').callsFake((file) => path.parse(file));
 let syncStub = sinon.stub(Sequelize.prototype, 'sync').callsFake(() => {});
 
@@ -16,7 +16,7 @@ let models;
 describe('postgre models', () => {
 
   beforeEach(() => {
-    models = require(`${contantes.PATH.INFRASTRUCTURE}/model/postgre`)(config, Sequelize);
+    models = require(`${constantes.PATH.INFRASTRUCTURE}/model/postgre`)(config, Sequelize);
   });
 
   it('should import models', () => {

@@ -5,7 +5,7 @@ let _config,
     _postgreModels,
     _postgreGenericRepository;
 
-const { contantes, exceptions } = require('../../config/util');
+const { constantes, exceptions } = require('../../config/util');
 
 module.exports = (config, core, postgreModels, postgreGenericRepository) => {
 
@@ -15,8 +15,8 @@ module.exports = (config, core, postgreModels, postgreGenericRepository) => {
   _config = config;
   _core = core;
 
-  _postgreModels = postgreModels || require(`${contantes.PATH.INFRASTRUCTURE}/model/postgre`)(config);
-  _postgreGenericRepository = postgreGenericRepository || require(`${contantes.PATH.INFRASTRUCTURE}/repository/postgreeGenericRepository`);
+  _postgreModels = postgreModels || require(`${constantes.PATH.INFRASTRUCTURE}/model/postgre`)(config);
+  _postgreGenericRepository = postgreGenericRepository || require(`${constantes.PATH.INFRASTRUCTURE}/repository/postgreeGenericRepository`);
 
   const connect = (options) => {
 

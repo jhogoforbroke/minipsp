@@ -1,6 +1,6 @@
 "use strict";
 
-const { config, contantes, exceptions } = require('../../../../config/util');
+const { config, constantes, exceptions } = require('../../../../config/util');
 
 const sinon  = require('sinon');
 const { expect } = require('chai');
@@ -9,43 +9,53 @@ let transactionRepository,
     payableRepository,
     payableService,
     cardService = { isValid: () => {} },
+    moneyService = { toInteger: () => true },
     unitOfWork;
 
-unitOfWork = require(`${contantes.PATH.TEST}/mocks/unitOfWork`);
+unitOfWork = require(`${constantes.PATH.TEST}/mocks/unitOfWork`);
 
 let cardIsValidSpy = sinon.spy(cardService, 'isValid');
-
-sinon.stub(unitOfWork, 'getRepository').callsFake((modelName) => {
-
-  if(modelName === 'transaction')
-    return transactionRepository;
-
-  if(modelName === 'payable')
-    return payableRepository;
-});
-
-sinon.stub(unitOfWork, 'getService').callsFake((serviceName) => {
-
-  if(serviceName === 'payable')
-    return payableService;
-
-  if(serviceName === 'card')
-    return cardService;
-});
 
 let transactionService;
 
 describe('transactionService', () => {
 
   beforeEach(() => {
-    transactionService = require(`${contantes.PATH.CORE}/services/transaction`)(unitOfWork);
+
+    sinon.stub(unitOfWork, 'getRepository').callsFake((modelName) => {
+
+      if(modelName === 'transaction')
+        return transactionRepository;
+
+      if(modelName === 'payable')
+        return payableRepository;
+    });
+
+    sinon.stub(unitOfWork, 'getService').callsFake((serviceName) => {
+
+      if(serviceName === 'payable')
+        return payableService;
+
+      if(serviceName === 'card')
+        return cardService;
+
+      if(serviceName === 'money')
+        return moneyService;
+    });
+
+    transactionService = require(`${constantes.PATH.CORE}/services/transaction`)(unitOfWork);
+  });
+
+  afterEach(() => {
+    unitOfWork.getRepository.restore();
+    unitOfWork.getService.restore();
   });
 
   describe('When process validate transaction data', () => {
 
     let card = {},
         transaction = {
-          type: contantes.CREDIT_CARD,
+          type: constantes.CREDIT_CARD,
           amount: '9.999.999,99',
           description: 'some valid description',
         };

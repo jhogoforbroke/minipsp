@@ -1,6 +1,6 @@
 "use strict";
 
-const { contantes } = require('../../../config/util');
+const { constantes } = require('../../../config/util');
 
 const chalk    = require('chalk');
 const inquirer = require('inquirer');
@@ -17,7 +17,7 @@ const confirmTransaction = () => {
         type: 'list',
         name: 'confirmTransaction',
         message: 'Confirma os dados da transação?',
-        choices: contantes.CONFIRM_OPTIONS
+        choices: constantes.CONFIRM_OPTIONS
       }
     ])
     .then((answer) => resolve(answer.confirmTransaction));
@@ -80,7 +80,7 @@ const getTransactionType = () => {
         type: 'list',
         name: 'transactionType',
         message: 'Qual tipo de transação?',
-        choices: contantes.TRANSACTION_TYPE_OPTIONS
+        choices: constantes.TRANSACTION_TYPE_OPTIONS
       }
     ])
     .then((answer) => {

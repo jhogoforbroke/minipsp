@@ -15,7 +15,7 @@ const getNumber = () => {
 
     inquirer.prompt([
       {
-        type: 'number',
+        type: 'string',
         name: 'cardNumber',
         message: 'Informe o numero do cartão'
       }
@@ -86,7 +86,7 @@ const getCVV = () => {
 
     inquirer.prompt([
       {
-        type: 'number',
+        type: 'string',
         name: 'cvv',
         message: 'Informe numero validador (CVV)'
       }
@@ -110,8 +110,8 @@ const getCard = () => {
   return new Promise((resolve, reject) => {
 
     getNumber()
-    .then((number) => {
-      _card.number = number;
+    .then((cardNumber) => {
+      _card.cardNumber = cardNumber;
       return getOwnerName();
     })
     .then((ownerName) => {

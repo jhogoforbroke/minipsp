@@ -16,7 +16,7 @@ config = {
   production: {}
 };
 
-config[env].contantes = require('./contantes');
+config[env].constantes = require('./constantes');
 config[env].exceptions = require('./exceptions');
 
 module.exports = config[env];

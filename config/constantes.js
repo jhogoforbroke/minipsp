@@ -16,7 +16,10 @@ const REFUSE = 'Débito';
 const RESTART = 'Débito';
 const CONFIRM_OPTIONS = [CONFIRM, REFUSE, RESTART];
 
-const contantes = {
+const DEBIT_TAX = 3;
+const CREDIT_TAX = 5;
+
+const constantes = {
   PAYMENT_OPTION,
   BALANCE_OPTION,
   SERVICE_TYPES_OPTIONS,
@@ -27,6 +30,8 @@ const contantes = {
   REFUSE,
   RESTART,
   CONFIRM_OPTIONS,
+  DEBIT_TAX,
+  CREDIT_TAX,
   PATH: {
     ROOT: rootPath,
     CONSOLE: path.normalize(`${rootPath}/app/console`),
@@ -36,4 +41,4 @@ const contantes = {
   }
 }
 
-module.exports = contantes;
+module.exports = constantes;

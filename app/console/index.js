@@ -3,7 +3,7 @@
 var unitOfWork,
     transactionService;
 
-const { contantes, config } = require('../../config/util');
+const { constantes, config } = require('../../config/util');
 
 const chalk       = require('chalk');
 const clear       = require('clear');
@@ -15,13 +15,13 @@ const ProgressBar = require('progress');
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 
 const menu = require('./menu');
-const core = require(`${contantes.PATH.CORE}`);
+const core = require(`${constantes.PATH.CORE}`);
 
 const turnOn = () => {
 
   printHeader();
 
-  unitOfWork = require(`${contantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, core);
+  unitOfWork = require(`${constantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, core);
 
   const connLoad = new Spinner('Iniciando...');
   connLoad.start();
@@ -38,11 +38,11 @@ const turnOn = () => {
 
       switch (serviceType) {
 
-        case contantes.PAYMENT_OPTION:
+        case constantes.PAYMENT_OPTION:
           startPaymentProcess();
           break;
 
-        case contantes.BALANCE_OPTION:
+        case constantes.BALANCE_OPTION:
           startBalanceProcess();
           break;
 
@@ -62,11 +62,11 @@ const restart = () => {
 
     switch (serviceType) {
 
-      case contantes.PAYMENT_OPTION:
+      case constantes.PAYMENT_OPTION:
         startPaymentProcess();
         break;
 
-      case contantes.BALANCE_OPTION:
+      case constantes.BALANCE_OPTION:
         startBalanceProcess();
         break;
 
@@ -104,15 +104,15 @@ const startPaymentProcess = () => {
   .then((confirmOption) => {
 
     switch (confirmOption) {
-      case contantes.CONFIRM:
+      case constantes.CONFIRM:
         applyTransaction(cardData, transactionData);
         break;
 
-      case contantes.REFUSE:
+      case constantes.REFUSE:
         startPaymentProcess();
         break;
 
-      case contantes.RESTART:
+      case constantes.RESTART:
         restart();
         break;
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-const { contantes } = require('../../config/util');
+const { constantes } = require('../../config/util');
 
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +14,7 @@ const readModuleFilesSync = (dir) =>
       : files.concat(path.join(dir, file)),
     []);
 
-readModuleFilesSync(`${contantes.PATH.CORE}/services`)
+readModuleFilesSync(`${constantes.PATH.CORE}/services`)
 .forEach((file) => {
   file = file.substr(0, file.length-3);
   let serviceName = file.substr(file.lastIndexOf('/')+1, file.length);

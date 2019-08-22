@@ -2,8 +2,8 @@
 
 "use strict";
 
-const { contantes } = require('./config/util');
+const { constantes } = require('./config/util');
 
-const miniPSPconsole = require(`${contantes.PATH.CONSOLE}`);
+const miniPSPconsole = require(`${constantes.PATH.CONSOLE}`);
 
 miniPSPconsole.turnOn();
