@@ -8,18 +8,18 @@ module.exports = (unitOfWork) => {
           !!cardNumber
           && typeof cardNumber === 'string'
           && cardNumber.length === 16
-          && /^[0-9]{16}$/.test(cardNumber);
+          && constantes.REGEX.VALID_CARD_NUMBER.test(cardNumber);
 
   const isValidCVV = (cvv) =>
           !!cvv
           && typeof cvv === 'string'
           && cvv.length === 3
-          && /^[0-9]{3}$/.test(cvv);
+          && constantes.REGEX.VALID_CVV.test(cvv);
 
   const isValidOwnerName = (ownerName) =>
           !!ownerName
           && typeof ownerName === 'string'
-          && !/[0-9]/.test(ownerName);
+          && !constantes.REGEX.VALID_OWNERNAME.test(ownerName);
 
   const isValidValidate = (validate) =>
           !!validate

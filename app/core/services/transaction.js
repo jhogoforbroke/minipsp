@@ -3,7 +3,6 @@
 const { constantes } = require('../../../config/util');
 
 let transactionRepository,
-    payableRepository,
     feeService,
     cardService,
     moneyService;
@@ -11,7 +10,6 @@ let transactionRepository,
 module.exports = (unitOfWork) => {
 
   transactionRepository = unitOfWork.getRepository('transaction');
-  payableRepository = unitOfWork.getRepository('payable');
 
   feeService = unitOfWork.getService('fee');
   cardService = unitOfWork.getService('card');
@@ -27,10 +25,10 @@ module.exports = (unitOfWork) => {
 
   const isValidAmount = (amount) =>
           !!amount
-          && /^[0-9]{1,3}((\.[0-9]{3})+)?\,[0-9]{2}$/.test(amount)
+          && constantes.REGEX.VALID_AMOUNTSTRING_2DECPRECISION.test(amount)
           && moneyService.toInteger(amount) > 0;
 
-  const isValidDescription = (description) => !!description && !/^(\s)+$/.test(description);
+  const isValidDescription = (description) => !!description && !constantes.REGEX.EMPTY_SPACE.test(description);
 
   const register = (card, transaction) => {
 
@@ -48,7 +46,7 @@ module.exports = (unitOfWork) => {
         description: transaction.description,
         cardNumber: cardService.hideCardNumber(card.cardNumber)
       })
-      // .then(payableService.register())
+      .then(payableService.register)
       .then(transactionRepository.getAll())
       .then(resolve)
       .catch(reject);
