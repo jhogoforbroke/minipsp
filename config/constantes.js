@@ -7,17 +7,19 @@ const PAYMENT_OPTION = 'Realizar Pagamento';
 const BALANCE_OPTION = 'Consultar Saldo';
 const SERVICE_TYPES_OPTIONS = [PAYMENT_OPTION, BALANCE_OPTION];
 
-const DEBIT_CARD = 'Crédito';
-const CREDIT_CARD = 'Débito';
+const DEBIT_CARD = 'Débito';
+const CREDIT_CARD = 'Crédito';
 const TRANSACTION_TYPE_OPTIONS = [DEBIT_CARD, CREDIT_CARD];
 
-const CONFIRM = 'Crédito';
-const REFUSE = 'Débito';
-const RESTART = 'Débito';
+const CONFIRM = 'Sim';
+const REFUSE = 'Não';
+const RESTART = 'Voltar Ao Menu Inicial';
 const CONFIRM_OPTIONS = [CONFIRM, REFUSE, RESTART];
 
 const DEBIT_TAX = 3;
 const CREDIT_TAX = 5;
+
+const CREDIT_DELAY_PAYMENT_DAYS = 30;
 
 const constantes = {
   PAYMENT_OPTION,
@@ -32,6 +34,11 @@ const constantes = {
   CONFIRM_OPTIONS,
   DEBIT_TAX,
   CREDIT_TAX,
+  PAYMENT_SATUS: {
+    PAID: 'paid',
+    WAITING_FUNDS: 'waiting_funds'
+  },
+  CREDIT_DELAY_PAYMENT_DAYS,
   PATH: {
     ROOT: rootPath,
     CONSOLE: path.normalize(`${rootPath}/app/console`),

@@ -34,20 +34,20 @@ module.exports = (unitOfWork) => {
 
     if (!validate(card, transaction)) throw new exceptions.InvalidTransactionData();
 
-    let amountInfo = feeService.applyFeeTax(transaction.type, moneyService.toInteger(transaction.amount));
+    let payableAmount = feeService.applyFeeTax(transaction.type, moneyService.toInteger(transaction.amount));
 
     return new Promise((resolve, reject) => {
 
       transactionRepository.create({
         type: transaction.type,
-        net: amountInfo.net,
-        gross: amountInfo.gross,
-        commission: amountInfo.commission,
+        net: payableAmount.net,
+        gross: payableAmount.gross,
+        commission: payableAmount.commission,
         description: transaction.description,
         cardNumber: cardService.hideCardNumber(card.cardNumber)
       })
       .then(payableService.register)
-      .then(transactionRepository.getAll())
+      .then(transactionRepository.getAll)
       .then(resolve)
       .catch(reject);
     });

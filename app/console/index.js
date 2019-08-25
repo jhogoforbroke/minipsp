@@ -50,7 +50,8 @@ const turnOn = () => {
           break;
       }
     });
-  });
+  })
+  .catch((err) => console.log(chalk.red('Erro ao executar transação!', err)));
 };
 
 const restart = () => {
@@ -117,16 +118,19 @@ const startPaymentProcess = () => {
         break;
     }
   })
-  .catch(console.log(chalk.red('Erro ao executar transação!', err)));
+  .catch((err) => console.log(chalk.red('Erro ao executar transação!', err)));
 };
 
 const applyTransaction = (cardData, transactionData) => {
 
-  transactionService.execute(cardData, transactionData);
-  .then(() => {
-    
+  transactionService.execute(cardData, transactionData)
+  .then((transactions) => {
+    console.log(chalk.green('Transação concluida com sucesso!'));
+    console.log(chalk.green('============'));
+    console.table(chalk.green(transactions));
+    console.log(chalk.green('============'));
   })
-  .catch(console.log(chalk.red('Erro ao executar transação!', err)));
+  .catch((err) => console.log(chalk.red('Erro ao executar transação!', err)));
 };
 
 const startBalanceProcess = () => {

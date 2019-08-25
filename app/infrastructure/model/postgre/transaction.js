@@ -1,5 +1,7 @@
 'use strict';
 
+const { constantes } = require('../../../../config/util');
+
 var Sequelize = require('sequelize');
 
 module.exports = function(sequelize, DataTypes) {
@@ -10,6 +12,31 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false,
       defaultValue: Sequelize.UUIDV4
+    },
+    type: {
+      type: DataTypes.ENUM,
+      values: constantes.TRANSACTION_TYPE_OPTIONS,
+      allowNull: false
+    },
+    net: {
+      type: DataTypes.NUMBER(2),
+      allowNull: false
+    },
+    gross: {
+      type: DataTypes.NUMBER(2),
+      allowNull: false
+    },
+    commission: {
+      type: DataTypes.NUMBER(2),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    cardNumber: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   });
 

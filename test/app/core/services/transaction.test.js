@@ -10,17 +10,18 @@ let transactionRepository,
     payableService,
     cardService = { isValid: () => {} },
     moneyService = { toInteger: () => true },
+    cardIsValidSpy,
     unitOfWork;
 
 unitOfWork = require(`${constantes.PATH.TEST}/mocks/unitOfWork`);
-
-let cardIsValidSpy = sinon.spy(cardService, 'isValid');
 
 let transactionService;
 
 describe('transactionService', () => {
 
   beforeEach(() => {
+
+    cardIsValidSpy = sinon.spy(cardService, 'isValid');
 
     sinon.stub(unitOfWork, 'getRepository').callsFake((modelName) => {
 
@@ -47,6 +48,7 @@ describe('transactionService', () => {
   });
 
   afterEach(() => {
+    cardIsValidSpy.restore();
     unitOfWork.getRepository.restore();
     unitOfWork.getService.restore();
   });

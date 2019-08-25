@@ -28,8 +28,17 @@ class InvalidTransactionData extends Error {
   }
 };
 
+class InvalidPaymentDate extends Error {
+  constructor(){
+    super('Invalid payment date!');
+    this.name = 'InvalidPaymentDate'
+  }
+};
+
 module.exports = {
   NoConfigError,
   NoCoreError,
-  UpdateWithoutWhereError
+  UpdateWithoutWhereError,
+  InvalidTransactionData,
+  InvalidPaymentDate
 };
