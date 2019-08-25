@@ -19,15 +19,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     net: {
-      type: DataTypes.NUMBER(2),
+      type: DataTypes.FLOAT(2),
       allowNull: false
     },
     gross: {
-      type: DataTypes.NUMBER(2),
+      type: DataTypes.FLOAT(2),
       allowNull: false
     },
     commission: {
-      type: DataTypes.NUMBER(2),
+      type: DataTypes.FLOAT(2),
       allowNull: false
     },
     description: {

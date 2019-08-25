@@ -5,7 +5,8 @@ const { constantes } = require('../../../config/util');
 let transactionRepository,
     feeService,
     cardService,
-    moneyService;
+    moneyService,
+    payableService;
 
 module.exports = (unitOfWork) => {
 
@@ -14,6 +15,7 @@ module.exports = (unitOfWork) => {
   feeService = unitOfWork.getService('fee');
   cardService = unitOfWork.getService('card');
   moneyService = unitOfWork.getService('money');
+  payableService = unitOfWork.getService('payable');
 
   const validate = (card, transaction) =>
           cardService.isValid(card)
@@ -36,24 +38,30 @@ module.exports = (unitOfWork) => {
 
     let payableAmount = feeService.applyFeeTax(transaction.type, moneyService.toInteger(transaction.amount));
 
+    return transactionRepository.create({
+      type: transaction.type,
+      net: payableAmount.net,
+      gross: payableAmount.gross,
+      commission: payableAmount.commission,
+      description: transaction.description,
+      cardNumber: cardService.hideCardNumber(card.cardNumber)
+    });
+  };
+
+  const execute = (card, transaction) => {
+
     return new Promise((resolve, reject) => {
 
-      transactionRepository.create({
-        type: transaction.type,
-        net: payableAmount.net,
-        gross: payableAmount.gross,
-        commission: payableAmount.commission,
-        description: transaction.description,
-        cardNumber: cardService.hideCardNumber(card.cardNumber)
-      })
+      register(card, transaction)
       .then(payableService.register)
       .then(transactionRepository.getAll)
       .then(resolve)
       .catch(reject);
     });
-  };
+  }
 
   return {
+    execute,
     register,
     validate
   };

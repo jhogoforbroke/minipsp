@@ -19,7 +19,7 @@ module.exports = (unitOfWork) => {
   const isValidOwnerName = (ownerName) =>
           !!ownerName
           && typeof ownerName === 'string'
-          && !constantes.REGEX.VALID_OWNERNAME.test(ownerName);
+          && !constantes.REGEX.INVALID_OWNERNAME.test(ownerName);
 
   const isValidValidate = (validate) =>
           !!validate

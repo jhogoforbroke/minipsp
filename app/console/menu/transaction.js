@@ -5,7 +5,6 @@ const { constantes } = require('../../../config/util');
 const chalk    = require('chalk');
 const inquirer = require('inquirer');
 
-
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 
 const confirmTransaction = () => {
@@ -24,7 +23,7 @@ const confirmTransaction = () => {
   });
 };
 
-const getValue = () => {
+const getValue = (resolve) => {
 
   return new Promise((resolve, reject) => {
 
@@ -32,18 +31,11 @@ const getValue = () => {
       {
         type: 'string',
         name: 'amount',
-        message: 'Qual valor da transação? (ex: 1,99)'
+        message: 'Qual valor da transação? (ex: 1,99)',
+        validate: (amount) => !!amount && !!/^[0-9]{1,3}((\.[0-9]{3})+)?\,[0-9]{2}$/.test(amount)
       }
     ])
-    .then((answer) => {
-
-      if (!answer.amount && /^[0-9]{1,3}((\.[0-9]{3})+)?\,[0-9]{2}$/.test(answer.amount)) {
-        console.log(chalk.yellow('Valor inválido, digite o valor novamente!'));
-        return getValue();
-      }
-
-      resolve(answer.amount);
-    });
+    .then((answer) => resolve(answer.amount));
   });
 };
 
@@ -55,19 +47,11 @@ const getDescription = () => {
       {
         type: 'string',
         name: 'description',
-        message: 'Informa uma descrição para a transação'
+        message: 'Informa uma descrição para a transação',
+        validate: (description) => !!description
       }
     ])
-    .then((answer) => {
-
-      if (!answer.description) {
-        console.log(chalk.yellow('Valor inválido, digite o valor novamente!'));
-        return getDescription();
-      }
-
-      resolve(answer.description);
-    });
-
+    .then((answer) => resolve(answer.description));
   });
 };
 
@@ -83,9 +67,7 @@ const getTransactionType = () => {
         choices: constantes.TRANSACTION_TYPE_OPTIONS
       }
     ])
-    .then((answer) => {
-      resolve(answer.transactionType);
-    });
+    .then((answer) => resolve(answer.transactionType));
   });
 };
 

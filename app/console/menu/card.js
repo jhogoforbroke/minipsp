@@ -7,9 +7,7 @@ const inquirer = require('inquirer');
 
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 
-const cardNumberIsValid = (cardNumber) => {
-  return constantes.REGEX.VALID_CARD_NUMBER.test(cardNumber);
-};
+const cardNumberIsValid = (cardNumber) => constantes.REGEX.VALID_CARD_NUMBER.test(cardNumber);
 
 const getNumber = () => {
 
@@ -19,20 +17,12 @@ const getNumber = () => {
       {
         type: 'string',
         name: 'cardNumber',
-        message: 'Informe o numero do cartão'
+        message: 'Informe o numero do cartão (ex: 1111111111111111)',
+        validate: (cardNumber) => cardNumberIsValid(cardNumber)
       }
     ])
-    .then((answer) => {
-      if (!cardNumberIsValid(answer.cardNumber)) {
-        console.log(chalk.yellow('Numero inválido!'));
-        return getNumber();
-      }
-
-      resolve(answer.cardNumber);
-    });
-
+    .then((answer) => resolve(answer.cardNumber));
   });
-
 }
 
 const getOwnerName = () => {
@@ -43,17 +33,11 @@ const getOwnerName = () => {
       {
         type: 'string',
         name: 'cardOwnerName',
-        message: 'Informe o nome do dono do cartão'
+        message: 'Informe o nome do dono do cartão, como impresso no cartão (ex: Anthony E Stark)',
+        validate: (cardOwnerName) => !!cardOwnerName && !constantes.REGEX.INVALID_OWNERNAME.test(cardOwnerName)
       }
     ])
-    .then((answer) => {
-      if (!answer.cardOwnerName) {
-        console.log(chalk.yellow('Nome inválido!'));
-        return getName();
-      }
-
-      resolve(answer.cardOwnerName);
-    });
+    .then((answer) => resolve(answer.cardOwnerName));
   });
 };
 
@@ -65,20 +49,12 @@ const getValidate = () => {
       {
         type: 'datetime',
         name: 'cardValidate',
-        message: 'Informe da data de validade',
-        format: ['mm', '/', 'yy']
+        message: 'Informe da data de validade (MM/YY)',
+        format: ['mm', '/', 'yy'],
+        validate: (cardValidate) => !!cardValidate && !!cardValidate > new Date()
       }
     ])
-    .then((answer) => {
-      console.log(answer.cardValidate);
-
-      if (!answer.cardValidate) {
-        console.log(chalk.yellow('Data Inválida!'));
-        return getValidate();
-      }
-
-      resolve(answer.cardValidate);
-    });
+    .then((answer) => resolve(answer.cardValidate));
   });
 };
 
@@ -90,18 +66,11 @@ const getCVV = () => {
       {
         type: 'string',
         name: 'cvv',
-        message: 'Informe numero validador (CVV)'
+        message: 'Informe numero validador (CVV)',
+        validate: (cvv) => !!cvv && !!constantes.REGEX.VALID_CVV.test(cvv)
       }
     ])
-    .then((answer) => {
-
-      if (!answer.cvv) {
-        console.log(chalk.yellow('CVV invalido!'));
-        return getCVV();
-      }
-
-      resolve(answer.cvv);
-    });
+    .then((answer) => resolve(answer.cvv));
   });
 };
 

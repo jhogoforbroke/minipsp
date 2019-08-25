@@ -8,9 +8,10 @@ const mysqlGenericRepository = (entityName, models) => {
 
   return {
     getAll: (where) => {
+
       return !!where
         ? model.findAll({
-          where: where
+          where: where,
         })
         : model.findAll();
     },

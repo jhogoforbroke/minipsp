@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     amount: {
-      type: DataTypes.NUMBER(2),
+      type: DataTypes.FLOAT(2),
       allowNull: false
     },
     paymentDate: {

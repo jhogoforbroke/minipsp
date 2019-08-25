@@ -18,7 +18,7 @@ readModuleFilesSync(`${constantes.PATH.CORE}/services`)
 .forEach((file) => {
   file = file.substr(0, file.length-3);
   let serviceName = file.substr(file.lastIndexOf('/')+1, file.length);
-  let service = (unitOfWork) => { return require(file)(unitOfWork) };
+  let service = (unitOfWork) => require(file)(unitOfWork);
   _exports[serviceName] = service;
 });
 

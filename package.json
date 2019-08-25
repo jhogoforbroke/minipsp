@@ -33,6 +33,7 @@
     "inquirer-datepicker-prompt": "^0.4.2",
     "moment": "^2.24.0",
     "pg": "^7.12.1",
+    "prettyjson": "^1.2.1",
     "progress": "^2.0.3",
     "sequelize": "^5.9.4"
   },

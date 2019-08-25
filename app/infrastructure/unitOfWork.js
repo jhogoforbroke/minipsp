@@ -28,8 +28,10 @@ module.exports = (config, core, postgreModels, postgreGenericRepository) => {
     return Promise.all(connProms);
   };
 
-  const getService = (serviceName) => _core[serviceName](this);
-  const getRepository = (entityName) => _postgreGenericRepository(entityName, _postgreModels);
+  const getRepository = (entityName) => { return _postgreGenericRepository(entityName, _postgreModels) };
+  const getService = function(serviceName) {
+    return _core[serviceName](this);
+  };
 
   return {
     connect,

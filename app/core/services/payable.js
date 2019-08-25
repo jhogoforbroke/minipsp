@@ -4,11 +4,13 @@ const { constantes, exceptions } = require('../../../config/util');
 
 let moment = require('moment');
 
-let payableRepository;
+let payableRepository,
+    transactionRepository;
 
 module.exports = (unitOfWork) => {
 
   payableRepository = unitOfWork.getRepository('payable');
+  transactionRepository = unitOfWork.getRepository('transaction');
 
   const definePayday = (transactionType) => {
 
@@ -61,7 +63,29 @@ module.exports = (unitOfWork) => {
     });
   };
 
+  const payables = () => {
+
+    return new Promise((resolve, reject) => {
+
+      let payables, transactions;
+
+      payableRepository.getAll()
+      .then((p) => {
+        payables = p;
+        return transactionRepository.getAll({ id: payables.map(x => x.transactionId) })
+      })
+      .then((t) => {
+        transactions = t;
+        payables.forEach(x => x.transaction = transactions.find(y => y.id === x.transactionId));
+
+        debugger;
+        resolve(payables);
+      });
+    });
+  };
+
   return {
-    register
+    register,
+    payables
   };
 };

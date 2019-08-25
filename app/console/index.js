@@ -1,7 +1,8 @@
 "use strict";
 
 var unitOfWork,
-    transactionService;
+    transactionService,
+    payableService;
 
 const { constantes, config } = require('../../config/util');
 
@@ -11,6 +12,7 @@ const figlet      = require('figlet');
 const inquirer    = require('inquirer');
 const { Spinner } = require('clui');
 const ProgressBar = require('progress');
+const prettyjson  = require('prettyjson');
 
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 
@@ -19,6 +21,7 @@ const core = require(`${constantes.PATH.CORE}`);
 
 const turnOn = () => {
 
+  clear();
   printHeader();
 
   unitOfWork = require(`${constantes.PATH.INFRASTRUCTURE}/unitOfWork`)(config, core);
@@ -32,6 +35,7 @@ const turnOn = () => {
     connLoad.stop();
 
     transactionService = unitOfWork.getService('transaction');
+    payableService = unitOfWork.getService('payable');
 
     menu.main.init()
     .then((serviceType) => {
@@ -78,7 +82,6 @@ const restart = () => {
 };
 
 const printHeader = () => {
-  clear();
 
   console.log(chalk.yellow(figlet.textSync('MiniPSP', {
       horizontalLayout: 'default',
@@ -89,16 +92,16 @@ const printHeader = () => {
 
 const startPaymentProcess = () => {
 
-  let transactionData, cardData;
+  let transaction, card;
 
   menu.transaction.getTransaction()
   .then((t) => {
-    transactionData = t;
+    transaction = t;
 
     return menu.card.getCard();
   })
   .then((c) => {
-    cardData = c;
+    card = c;
 
     return menu.transaction.confirmTransaction();
   })
@@ -106,7 +109,7 @@ const startPaymentProcess = () => {
 
     switch (confirmOption) {
       case constantes.CONFIRM:
-        applyTransaction(cardData, transactionData);
+        applyTransaction(card, transaction);
         break;
 
       case constantes.REFUSE:
@@ -121,20 +124,95 @@ const startPaymentProcess = () => {
   .catch((err) => console.log(chalk.red('Erro ao executar transação!', err)));
 };
 
-const applyTransaction = (cardData, transactionData) => {
+const printLastTransactions = (transactions) => {
+  if (!transactions || transactions.length === 0)
+    return console.log(chalk.yellow('Sem transações registradas!'));
 
-  transactionService.execute(cardData, transactionData)
+  transactions
+  .sort((a, b) => (new Date(b.createdAt) - new Date(a.createdAt))) //Order DESC by CreatedAt
+  .slice(0, 5) // Show Last 5
+  .forEach(t => {
+
+    console.log(chalk.green('============'));
+
+    console.log(prettyjson.render({
+      'Transação': t.id,
+      'Tipo': t.type,
+      'Valor': t.gross,
+      'Descrição': t.description,
+      'Cartão': t.cardNumber,
+      'Data': t.createdAt
+    }))
+
+    console.log(chalk.green('============'));
+
+  });
+};
+
+const printPayablesBalance = (payables) => {
+
+  let paidPayables = [],
+      waitingFundsPayables = [];
+
+  payables.forEach((payable) => {
+    if (payable.paymentDate <= new Date())
+      return paidPayables.push(payable);
+
+    if (payable.paymentDate > new Date())
+      waitingFundsPayables.push(payable);
+  });
+
+  console.log();
+  console.log(chalk.green('=== Recebidas ==='));
+  paidPayables.forEach((paidPayable) => {
+
+    console.log(prettyjson.render({
+      'Data': paidPayable.paymentDate,
+      'Valor': paidPayable.amount,
+      'Descrição': paidPayable.transaction.description,
+      'Tipo': paidPayable.transaction.type
+    }))
+
+    console.log(chalk.green(new inquirer.Separator()));
+  });
+
+  console.log();
+
+  console.log(chalk.green('=== À Receber ==='));
+  waitingFundsPayables.forEach((waitingFundsPayable) => {
+
+    console.log(prettyjson.render({
+      'Data': waitingFundsPayable.paymentDate,
+      'Valor': waitingFundsPayable.amount,
+      'Descrição': waitingFundsPayable.transaction.description,
+      'Tipo': waitingFundsPayable.transaction.type
+    }))
+
+    console.log(chalk.green(new inquirer.Separator()));
+  });
+
+  console.log();
+};
+
+const applyTransaction = (card, transaction) => {
+
+  transactionService.execute(card, transaction)
   .then((transactions) => {
     console.log(chalk.green('Transação concluida com sucesso!'));
-    console.log(chalk.green('============'));
-    console.table(chalk.green(transactions));
-    console.log(chalk.green('============'));
+    printLastTransactions(transactions);
+    restart();
   })
   .catch((err) => console.log(chalk.red('Erro ao executar transação!', err)));
 };
 
 const startBalanceProcess = () => {
-  
+  payableService.payables()
+  .then((payables) => {
+    printPayablesBalance(payables);
+
+    restart();
+  })
+  .catch((err) => console.log(chalk.red('Erro ao buscar saldo!', err)));
 };
 
 module.exports = { turnOn, restart };
