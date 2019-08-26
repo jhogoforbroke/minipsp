@@ -57,7 +57,7 @@ npm test
 
 ## Autores
 
-* **Jonatas Marinho** - *Initial work* - [jhogoforboke](https://github.com/jhogoforboke)
+* **Jonatas Marinho** - *versão Inicial* - [jhogoforboke](https://github.com/jhogoforboke)
 
 ## Licença
 
