@@ -43,15 +43,7 @@ Testes unitários:
 npm test
 ``
 
-### And coding style tests
-
-Explain what these tests test and why
-
-``
-Give an example
-``
-
-## Built With
+## Construido com
 
 * [PostgreSQL](https://www.postgresql.org/docs/) - PostgreSQL Database
 * [Sequelize](https://sequelize.org/master/) - Sequelize ORM
@@ -63,10 +55,10 @@ Give an example
 * [chai](https://www.chaijs.com/) - Asertivas BDD e TDD para nodejs
 * [sinon](https://sinonjs.org/releases/v7.4.1/) - Spies, Stubs e Mocks para nodejs
 
-## Authors
+## Autores
 
 * **Jonatas Marinho** - *Initial work* - [jhogoforboke](https://github.com/jhogoforboke)
 
-## License
+## Licença
 
-Este projeto esta sobre MIT License - [LICENSE.md](https://pt.wikipedia.org/wiki/Licen%C3%A7a_MIT)
+Este projeto esta sobre MIT License - [MIT](https://pt.wikipedia.org/wiki/Licen%C3%A7a_MIT)
