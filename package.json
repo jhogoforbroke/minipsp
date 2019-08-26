@@ -4,7 +4,9 @@
   "description": "A simple mini Payment Service Provider (PSP) to process cash-in / cash-out process",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --inspect=0.0.0.0:7000 --recursive test"
+    "test": "mocha --inspect=0.0.0.0:7000 --recursive test",
+    "debugger": "node --inspect=0.0.0.0:7000 index.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",

@@ -78,7 +78,6 @@ module.exports = (unitOfWork) => {
         transactions = t;
         payables.forEach(x => x.transaction = transactions.find(y => y.id === x.transactionId));
 
-        debugger;
         resolve(payables);
       });
     });

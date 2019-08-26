@@ -8,7 +8,6 @@ const mysqlGenericRepository = (entityName, models) => {
 
   return {
     getAll: (where) => {
-
       return !!where
         ? model.findAll({
           where: where,
@@ -17,7 +16,6 @@ const mysqlGenericRepository = (entityName, models) => {
     },
 
     getOne: (where) => {
-
       return model.findOne({
         where: where
       });
@@ -28,7 +26,6 @@ const mysqlGenericRepository = (entityName, models) => {
     },
 
     update: (where, data) => {
-
       if (!where) {
         throw new exceptions.UpdateWithoutWhereError();
         return;
@@ -49,10 +46,6 @@ const mysqlGenericRepository = (entityName, models) => {
       return model.count({
         where: where
       });
-    },
-
-    rawQuery:(query) => {
-      return _modelBase.sequelize.query(query, { model: model });
     }
   }
 };

@@ -9,9 +9,15 @@ const { expect } = require('chai');
 
 let unitOfWork,
     payableRepositoryCreateSpy,
-    payableRepository = { create: () => {} };
+    payableRepositoryGetAllStub,
+    transactionRepositoryGetAllStub,
+    payableRepository = { create: () => {}, getAll: () => {} },
+    transactionRepository = { getAll: () => {} };
 
 unitOfWork = require(`${constantes.PATH.TEST}/mocks/unitOfWork`);
+
+let payables = [{ id: 1, transactionId: 1 }, { id: 2, transactionId: 2 }, { id: 3, transactionId: 3 }];
+let transactions = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
 let payableService;
 
@@ -22,16 +28,60 @@ describe('payableService', () => {
     sinon.stub(unitOfWork, 'getRepository').callsFake((modelName) => {
       if(modelName === 'payable')
         return payableRepository;
+
+      if(modelName === 'transaction')
+        return transactionRepository;
     });
 
     payableRepositoryCreateSpy = sinon.spy(payableRepository, 'create');
+
+    payableRepositoryGetAllStub =
+      sinon.stub(payableRepository, 'getAll').callsFake(() => {
+        return new Promise((resolve, reject) => {
+          resolve(payables)
+        });
+      });
+
+    transactionRepositoryGetAllStub =
+      sinon.stub(transactionRepository, 'getAll').callsFake(() => {
+        return new Promise((resolve, reject) => {
+          resolve(transactions)
+        });
+      });
 
     payableService = require(`${constantes.PATH.CORE}/services/payable`)(unitOfWork);
   });
 
   afterEach(() => {
     payableRepositoryCreateSpy.restore();
+    payableRepositoryGetAllStub.restore();
+    transactionRepositoryGetAllStub.restore();
     unitOfWork.getRepository.restore();
+  });
+
+  describe('When return a payable info list', () => {
+
+    it('should get all payables with transactions info', function(done) {
+
+      payableService.payables()
+      .then((payables) => {
+
+        expect(payableRepositoryGetAllStub.called).to.be.true;
+
+        expect(transactionRepositoryGetAllStub.called).to.be.true;
+
+        let args = transactionRepositoryGetAllStub.args[0][0];
+        expect(args).to.be.deep.equal({ id: transactions.map(x => x.id) });
+
+        payables.forEach((payable) => {
+          expect(payable.transaction).to.not.be.undefined;
+        });
+
+        done();
+      });
+
+    });
+
   });
 
   describe('When register a payable', () => {
