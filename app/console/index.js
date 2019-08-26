@@ -4,6 +4,8 @@ var unitOfWork,
     transactionService,
     payableService;
 
+const Dinero = require('dinero.js')
+
 const { constantes, config } = require('../../config/util');
 
 const chalk       = require('chalk');
@@ -138,7 +140,7 @@ const printLastTransactions = (transactions) => {
     console.log(prettyjson.render({
       'Transação': t.id,
       'Tipo': t.type,
-      'Valor': t.gross,
+      'Valor': Dinero({ amount: t.gross, currency: 'BRL' }).toFormat(),
       'Descrição': t.description,
       'Cartão': t.cardNumber,
       'Data': t.createdAt
@@ -168,7 +170,7 @@ const printPayablesBalance = (payables) => {
 
     console.log(prettyjson.render({
       'Data': paidPayable.paymentDate,
-      'Valor': paidPayable.amount,
+      'Valor': Dinero({ amount: paidPayable.amount, currency: 'BRL' }).toFormat(),
       'Descrição': paidPayable.transaction.description,
       'Tipo': paidPayable.transaction.type
     }))
@@ -183,7 +185,7 @@ const printPayablesBalance = (payables) => {
 
     console.log(prettyjson.render({
       'Data': waitingFundsPayable.paymentDate,
-      'Valor': waitingFundsPayable.amount,
+      'Valor': Dinero({ amount: waitingFundsPayable.amount, currency: 'BRL' }).toFormat(),
       'Descrição': waitingFundsPayable.transaction.description,
       'Tipo': waitingFundsPayable.transaction.type
     }))
