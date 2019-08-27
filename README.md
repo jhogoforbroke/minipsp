@@ -2,7 +2,7 @@
 
 Serviço Provedor de Pagamentos
 
-Execução de cobranças via cartão de crédio e débito, constole de transações e agendamento de recebiveis
+Execução de cobranças via cartão de crédio e débito, console de transações e agendamento de recebiveis
 
 ## Getting Started
 
